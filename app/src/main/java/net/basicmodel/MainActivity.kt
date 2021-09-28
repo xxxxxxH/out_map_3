@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity(), NearClickListener {
         Manifest.permission.ACCESS_FINE_LOCATION
     )
     private val title = arrayOf("map", "nearby", "streetView", "interActive")
-    var views: ArrayList<Fragment>? = null
+    private var views: ArrayList<Fragment>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(), NearClickListener {
         requestPermissions()
     }
 
-    fun requestPermissions() {
+    private fun requestPermissions() {
         PermissionRequest.getInstance().build(this)
             .requestPermission(object : PermissionRequest.PermissionListener {
                 override fun permissionGranted() {

@@ -1,9 +1,8 @@
 package net.fragment
 
-import android.os.Bundle
 import net.basicmodel.R
 
-class FragmentS:BaseFragment() {
+class FragmentS : BaseFragment() {
     override fun initView() {
 
     }
