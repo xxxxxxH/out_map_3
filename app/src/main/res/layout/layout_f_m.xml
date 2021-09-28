@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:gravity="center_vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="60dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/search"
+            style="@style/tvStyle"
+            android:text="search" />
+
+        <TextView
+            android:id="@+id/mapNormal"
+            style="@style/tvStyle"
+            android:text="normal" />
+
+        <TextView
+            android:id="@+id/mapHybrid"
+            style="@style/tvStyle"
+            android:text="hybird" />
+
+        <TextView
+            android:id="@+id/mapSat"
+            style="@style/tvStyle"
+            android:text="sattelite" />
+
+        <TextView
+            android:id="@+id/mapTer"
+            style="@style/tvStyle"
+
+            android:text="terrain" />
+    </LinearLayout>
+
+</RelativeLayout>
