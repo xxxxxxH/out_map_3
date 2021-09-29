@@ -7,16 +7,20 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.weeboos.permissionlib.PermissionRequest
+import com.zhouyou.http.EasyHttp
 import kotlinx.android.synthetic.main.activity_main.*
 import net.entity.ResourceEntity
+import net.event.MessageEvent
 import net.fragment.FragmentI
 import net.fragment.FragmentM
 import net.fragment.FragmentN
 import net.fragment.FragmentS
+import net.utils.MapTypeClickListener
 import net.utils.NearClickListener
 import net.utils.PackageUtils
+import org.greenrobot.eventbus.EventBus
 
-class MainActivity : AppCompatActivity(), NearClickListener {
+class MainActivity : AppCompatActivity(), NearClickListener,MapTypeClickListener {
     private val permissions = arrayOf(
         Manifest.permission.ACCESS_COARSE_LOCATION,
         Manifest.permission.ACCESS_FINE_LOCATION
@@ -27,6 +31,7 @@ class MainActivity : AppCompatActivity(), NearClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        EasyHttp.init(application)
         requestPermissions()
     }
 
@@ -50,7 +55,7 @@ class MainActivity : AppCompatActivity(), NearClickListener {
 
     private fun initView() {
         views = ArrayList()
-        views!!.add(FragmentM())
+        views!!.add(FragmentM(this))
         views!!.add(FragmentN(this))
         views!!.add(FragmentS())
         views!!.add(FragmentI())
@@ -64,5 +69,25 @@ class MainActivity : AppCompatActivity(), NearClickListener {
         }
         PackageUtils.get()
             .startApp(this, Uri.parse("http://maps.google.com/maps?q=" + entity.name + "&hl=en"))
+    }
+
+    override fun typeClick(type: String) {
+        when(type){
+            "search"->{
+                EventBus.getDefault().post(MessageEvent("search"))
+            }
+            "n"->{
+                EventBus.getDefault().post(MessageEvent("n"))
+            }
+            "h"->{
+                EventBus.getDefault().post(MessageEvent("h"))
+            }
+            "s"->{
+                EventBus.getDefault().post(MessageEvent("s"))
+            }
+            "t"->{
+                EventBus.getDefault().post(MessageEvent("t"))
+            }
+        }
     }
 }

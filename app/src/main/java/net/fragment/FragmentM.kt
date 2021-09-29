@@ -17,14 +17,20 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.layout_f_m.*
 import net.basicmodel.R
+import net.event.MessageEvent
+import net.utils.MapTypeClickListener
 import net.utils.MapUtils
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 @SuppressLint("MissingPermission")
-class FragmentM : BaseFragment() {
+class FragmentM(val listener: MapTypeClickListener) : BaseFragment() {
 
     var mMap: GoogleMap? = null
 
     override fun initView() {
+        EventBus.getDefault().register(this)
         mapview.onCreate(bundle)
         mapview.onResume()
         MapsInitializer.initialize(activity)
@@ -87,11 +93,54 @@ class FragmentM : BaseFragment() {
     }
 
     override fun initData() {
-
+        search.setOnClickListener {
+            listener.typeClick("search")
+        }
+        mapNormal.setOnClickListener {
+            listener.typeClick("n")
+        }
+        mapHybrid.setOnClickListener {
+            listener.typeClick("h")
+        }
+        mapSat.setOnClickListener {
+            listener.typeClick("s")
+        }
+        mapTer.setOnClickListener {
+            listener.typeClick("t")
+        }
     }
 
     override fun getLayout(): Int {
         return R.layout.layout_f_m
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event:MessageEvent){
+        val msg = event.getMessage()[0]
+        when(msg){
+            "search"->{
+                startActivityForResult(
+                    PlacePicker.IntentBuilder().build(activity),
+                    1
+                )
+            }
+            "n"->{
+                mMap!!.mapType = GoogleMap.MAP_TYPE_NORMAL
+            }
+            "h"->{
+                mMap!!.mapType = GoogleMap.MAP_TYPE_HYBRID
+            }
+            "s"->{
+                mMap!!.mapType = GoogleMap.MAP_TYPE_SATELLITE
+            }
+            "t"->{
+                mMap!!.mapType = GoogleMap.MAP_TYPE_TERRAIN
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        EventBus.getDefault().unregister(this)
+    }
 }
